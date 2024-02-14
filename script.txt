@@ -1,0 +1,85 @@
+Main project
+   Demo Azure OpenAI
+      https://oai.azure.com/portal/c41f0701cf5041399e63e32d839dd050/chat?tenantid=72f988bf-86f1-41af-91ab-2d7cd011db47
+   Generate project
+      Open https://github.com/roryp/tomcat10.git
+   GENERATE servlet
+Demo app on local tomcat
+   Show local Tomcat
+	   Debugging
+Tests
+   Open https://github.com/roryp/my-tomcat-test-project.git
+	   Generate Playwright
+
+AppCat Report
+	appcat-cli --input "target\imagegen.war" --target discovery
+
+Github actions
+   GENERATE github action
+   Create the service principal:
+      az ad sp create-for-rbac --name <sp name> --role contributor --scopes /subscriptions/<subscription>/resourceGroups/<resource group>/providers/Microsoft.Web/sites/<app> --json-auth
+	push to Azure and demo
+      https://github.com/roryp/tomcat10/actions/workflows/main_hellorpza.yml
+      https://tomcatrpza.azurewebsites.net/
+
+
+Slides
+
+RWA Demo
+
+Demo the app
+https://fd-eap-javarel-prod-a4e9dmfecyedceds.b02.azurefd.net
+https://fd-eap-javarel-prod-a4e9dmfecyedceds.b02.azurefd.net/actuator/retryevents
+https://fd-eap-javarel-prod-a4e9dmfecyedceds.b02.azurefd.net/actuator/metrics/resilience4j.circuitbreaker.not.permitted.calls
+
+Application insights
+https://ms.portal.azure.com/#blade/AppInsightsExtension/BladeRedirect/BladeName/applicationMap/ResourceId/%2Fsubscriptions%2F6ad866ae-f77e-4d58-8f02-a00a75a0e21b%2FresourceGroups%2Frg-eap-javarel-app1-prod%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2Fappi-eap-javarel-prod/BladeInputs/%7B%22MainResourceId%22%3A%22%2Fsubscriptions%2F6ad866ae-f77e-4d58-8f02-a00a75a0e21b%2FresourceGroups%2Frg-eap-javarel-app1-prod%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2Fappi-eap-javarel-prod%22%2C%22TimeContext%22%3A%7B%22durationMs%22%3A2592000000%7D%2C%22DataModel%22%3A%7B%22exclude4xxError%22%3Atrue%2C%22timeContext%22%3A%7B%22durationMs%22%3A2592000000%7D%2C%22layoutOption%22%3A%22Organic%22%2C%22nodeContentFilter%22%3A%22%22%2C%22components%22%3A%5B%5D%7D%7D
+PostgreSQL failover -- https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/6ad866ae-f77e-4d58-8f02-a00a75a0e21b/resourceGroups/rg-eap-javarel-db-prod/providers/Microsoft.DBforPostgreSQL/flexibleServers/psqlf-eap-javarel-westus3-prod/highAvailability
+cache -- https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/6ad866ae-f77e-4d58-8f02-a00a75a0e21b/resourceGroups/rg-eap-javarel-app2-prod/providers/Microsoft.Cache/Redis/redis-iywtvabtsudxxng-prod/insights
+      -- https://ms.portal.azure.com/#view/AppInsightsExtension/DetailsV2Blade/DataModel~/%7B%22eventId%22%3A%223fa5bff8-ba94-11ee-ba97-6045bda28a40%22%2C%22timestamp%22%3A%222024-01-24T08%3A39%3A57.805Z%22%7D/ComponentId~/%7B%22Name%22%3A%22appi-eap-javarel-prod%22%2C%22ResourceGroup%22%3A%22rg-eap-javarel-app1-prod%22%2C%22SubscriptionId%22%3A%226ad866ae-f77e-4d58-8f02-a00a75a0e21b%22%7D
+
+Review the workshop
+https://github.com/roryp/reliable-web-app-pattern-java-workshop
+@workspace explain how this project uses the circuit breaker pattern
+@vscode /search retry
+@vscode /search @CacheConfig
+
+**Prompt for Project**
+
+@workspace /new Create a new Maven project with a pom.xml file for a Jakarta EE 9 Servlet app using Java 17. Include dependencies for groupId:jakarta.platform artifactId:jakarta.jakartaee-web-api version:10.0.0 and com.azure.azure-ai-openai (1.0.0-beta.5). Also, create a JSP file with a form to call the servlet and pass a string parameter named 'animal'. Make the maven groupId "example.demo", artifactId "imagegen". Do not generate unit tests
+
+**Prompt for Servlet**
+
+Generate the complete Java servlet named `AnimalGenerator` in the package `com.microsoft.example`. The servlet should be annotated with `@WebServlet("/animalgenerator")`.
+The servlet should have a `Logger` instance to log messages and an `OpenAIAsyncClient` instance to interact with the OpenAI API.
+Override the `init()` method from `HttpServlet`. In this method, initialize the `OpenAIAsyncClient` instance using the OpenAI API key.
+Override the `doGet()` method from `HttpServlet`. In this method, get the 'animal' parameter from the request. Check if this parameter is null or empty. If it's not, write an HTML header to the response, call a method named `processRequest()` passing the animal type and the response, and then write an HTML footer to the response.
+The `processRequest()` method should take a string representing the animal type and an `HttpServletResponse`. In this method, create a list of `ChatMessage` objects and add a new `ChatMessage` to the list with the role `ChatRole.USER` and the text "Create a 30 word story about a " followed by the animal type. Then, create a `ChatCompletionsOptions` object with the list of chat messages and call `getChatCompletions()` on the `OpenAIAsyncClient` instance, passing "GPT-4" and the `ChatCompletionsOptions` object.
+The servlet should also have a method to get an image URL from Dall-E. This method should use the `getImages()` method of the `OpenAIAsyncClient` instance to get an image URL of the specified animal. To do this, it should call the `getImages()` method on the `OpenAIAsyncClient` instance, passing the animal type, and return the result. The `getImages()` method is part of the Dall-E API and returns a list of image URLs. You should select the first URL from this list as the result.
+
+**Prompt for Test**
+
+I'm working on a Playwright test for a web page that generates images based on an 'animal' parameter. The test should navigate to the page, check if a story is present in the body of the page, and check if an image element is present. Can you help me write this test from scratch?
+
+**Prompt for GitHub Actions**
+
+Create a YAML configuration file for a GitHub Actions workflow. The file should be named 'Build and deploy WAR app to Azure Web App - hellorpza'. The workflow should trigger on push events to the 'main' branch and also allow manual dispatch. It should consist of two jobs: 'build' and 'deploy'.
+
+1. Build Job:
+   - Runs on the latest Ubuntu.
+   - Checks out the code.
+   - Sets up Java 17 using Temurin distribution.
+   - Caches Maven packages and restores them using a key based on the OS and hash of 'pom.xml' files.
+   - Builds the project with Maven in batch mode and verbose.
+   - Uploads the generated `.war` file as an artifact named 'java-app'.
+
+2. Deploy Job:
+   - Also runs on the latest Ubuntu and depends on the build job.
+   - Defines an environment named 'Production' with a dynamic URL from the deployment step.
+   - Requires write permission for the ID token.
+   - Downloads the 'java-app' artifact from the build job.
+   - Logs into Azure using AZURE_CREDENTIALS from secrets.
+   - Deploys the `.war` file to the Azure Web App named 'tomcatrpza' in the 'Production' slot.
+
+Ensure the YAML is properly formatted and includes all necessary actions and parameters as outlined.
+
