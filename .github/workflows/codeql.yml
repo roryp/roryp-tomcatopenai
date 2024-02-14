@@ -47,6 +47,13 @@ jobs:
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
+
+    - name: Set up Java version
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'microsoft'
+        
     - name: Checkout repository
       uses: actions/checkout@v4
 
@@ -65,8 +72,8 @@ jobs:
 
     # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+    - name: Build with Maven
+      run: mvn clean install -B -V # -B for Batch mode, -V for displaying version info
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
